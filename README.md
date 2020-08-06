@@ -57,28 +57,28 @@
 
 ### MainApp.java
 Η βασική κλάση του προγράμματος
-  - processFiles(String filePath, boolean processFullMetadata) παίρνει ως όρισμα το path που αντιστοιχεί στο metadata.csv και το αν θέλουμε να επεξεργαστούμε και τα json αρχεία. Είναι υπεύθυνη για τη βασική ροή του προγράμματος όπως αναλύθηκε παραπάνω και έχω επιλέξει να τρέχει σε ξεχωριστό Tread έτσι ώστε να μην εμποδίζεται η ταυτόχρονη λειτουργία του γραφικού..
+  - _processFiles(String filePath, boolean processFullMetadata)_: παίρνει ως όρισμα το path που αντιστοιχεί στο metadata.csv και το αν θέλουμε να επεξεργαστούμε και τα json αρχεία. Είναι υπεύθυνη για τη βασική ροή του προγράμματος όπως αναλύθηκε παραπάνω και έχω επιλέξει να τρέχει σε ξεχωριστό Tread έτσι ώστε να μην εμποδίζεται η ταυτόχρονη λειτουργία του γραφικού..
   
 ### CSVParser.java
 Η κλάση για την επεξεργασία του .csv αρχείου
- - List<Article> parseFile(String filePath): Αυτή η μέθοδος δέχεται ως όρισμα ένα path για ένα αρχείο, και επιστρέφει μία λίστα με όλα τα αντικείμενα τύπου Article που έχει το αρχείο αυτό.
+ - _List<Article> parseFile(String filePath)_: Αυτή η μέθοδος δέχεται ως όρισμα ένα path για ένα αρχείο, και επιστρέφει μία λίστα με όλα τα αντικείμενα τύπου Article που έχει το αρχείο αυτό.
  
 ### JSONParser.java
 Η κλάση για την επεξεργασία του .json αρχείου
- - List<FullArticle> parseFile(Article article, String folder): Αυτή η μέθοδος δέχεται ως όρισμα ένα αντικείμενο τύπου Article καθώς το path για τον φάκελο που περιέχει το φάκελο document_parses με τα .json αρχεία, και επιστρέφει μία λίστα με όλα τα αντικείμενα τύπου FullArticles που αντιστοιχούν στο Article αυτό.
+ - _List<FullArticle> parseFile(Article article, String folder)_: Αυτή η μέθοδος δέχεται ως όρισμα ένα αντικείμενο τύπου Article καθώς το path για τον φάκελο που περιέχει το φάκελο document_parses με τα .json αρχεία, και επιστρέφει μία λίστα με όλα τα αντικείμενα τύπου FullArticles που αντιστοιχούν στο Article αυτό.
   
 ### DBManager.java
 Η κλάση που διαχειρίζεται τη σύνδεση με τη Βάση δεδομένων και την αποστολή ερωτημάτων σε αυτήν. Έχει τις εξής μεθόδους:
- - Properties loadSettings(): Διαβάζει το αρχείο config.properties του project και επιστρέφει ένα αντικείμενο τύπου Properties με τις παραμέτρους της βάσης.
- - writeArticlesMetadata(List<Article> articles): Παίρνει ως όρισμα μία λίστα από αντικείμενα Articles και αποθηκεύει στον πίνακα Article της βάσης όλα τα πεδία τους.
+ - _Properties loadSettings()_: Διαβάζει το αρχείο config.properties του project και επιστρέφει ένα αντικείμενο τύπου Properties με τις παραμέτρους της βάσης.
+ - _writeArticlesMetadata(List<Article> articles)_: Παίρνει ως όρισμα μία λίστα από αντικείμενα Articles και αποθηκεύει στον πίνακα Article της βάσης όλα τα πεδία τους.
    Πρώτα φτιάχνει τα παραμετροποιημένα qweries και με τα τα εκτελει όλα μαζλι στη βάση ως batch με σκοπό τη μικρότερη καθυστέρηση του προγράμματος στην επικοινωνία.
- - List<Article> getArticlesWithFiles(): Επιλέγει από τη βάση τις εγγραφές εκείνες που έχουν τιμή στα πεδία pathToPDF ή pathToPMC και επιστρέφει μία λίστα με αντικείμενα Articles με πεδία το cordID, το pathToPDF και pathToPMC της εγγραφής.
- - writeFullArticle(FullArticle fullArticle, String cordID): Αυτή η μέθοδος λαμβάνει ως ορίσματα ένα αντικείμενο τύπου FullArticle και το ID ενός Article, και αποθηκεύει στον πίνακα FullArticle της βάσης το FullArticle, και στον πίνακα της βάσης ArticleToFullArticle τη συσχέτιση του Article με ένα FullArticle.
- - int getNumberOfArticlesWithFullText(): Επιστρέφει από τη βάση τον αριθμό όλων FullArticles τα οποία έχουν πλήρες κείμενο.
- - int getNumberOfAllArticles(): Επιστρέφει από τη βάση τον αριθμό όλων των Articles.
- - ArrayList<String> getDatasetForAuthors(): Επιστρέφει από τη βάση σε πίνακα τους συγγραφείς όλων των Articles.
- - HashMap<Integer, Integer> getDatasetForPublishYear(): Επιστρέφει από τη βάση τον αριθμό των Articles ανά έτος και το έτος που δημοσιεύτηκαν.
- - close(): Κλείνει τη σύνδεση στη βάση
+ - _List<Article> getArticlesWithFiles()_: Επιλέγει από τη βάση τις εγγραφές εκείνες που έχουν τιμή στα πεδία pathToPDF ή pathToPMC και επιστρέφει μία λίστα με αντικείμενα Articles με πεδία το cordID, το pathToPDF και pathToPMC της εγγραφής.
+ - _writeFullArticle(FullArticle fullArticle, String cordID)_: Αυτή η μέθοδος λαμβάνει ως ορίσματα ένα αντικείμενο τύπου FullArticle και το ID ενός Article, και αποθηκεύει στον πίνακα FullArticle της βάσης το FullArticle, και στον πίνακα της βάσης ArticleToFullArticle τη συσχέτιση του Article με ένα FullArticle.
+ - _int getNumberOfArticlesWithFullText()_: Επιστρέφει από τη βάση τον αριθμό όλων FullArticles τα οποία έχουν πλήρες κείμενο.
+ - _int getNumberOfAllArticles()_: Επιστρέφει από τη βάση τον αριθμό όλων των Articles.
+ - _ArrayList<String> getDatasetForAuthors()_: Επιστρέφει από τη βάση σε πίνακα τους συγγραφείς όλων των Articles.
+ - _HashMap<Integer, Integer> getDatasetForPublishYear()_: Επιστρέφει από τη βάση τον αριθμό των Articles ανά έτος και το έτος που δημοσιεύτηκαν.
+ - _close()_: Κλείνει τη σύνδεση στη βάση
  
 ## Βιβλιοθήκες που χρησιμοποιήθηκαν
  - opencsv-5.2.jar: Για την μετατροπή των εγγραφών του .csv αρχείου σε αντικείμενα.
