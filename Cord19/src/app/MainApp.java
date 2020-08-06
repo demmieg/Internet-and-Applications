@@ -27,7 +27,7 @@ public class MainApp {
 				if (filePath == null) {
 					GUIApp.appendLog("Δεν έχετε ορίσει CSV αρχείο. Παρακαλώ ορίστε το αρχείο των μεταδεδομένων");
 				} else {
-					
+
 					GUIApp.appendLog("Η διαδικασία ξεκίνησε. Παρακαλώ περιμένετε... \n");
 
 					File f = new File(filePath);
@@ -83,7 +83,8 @@ public class MainApp {
 					}
 
 					dbManager.close();
-					GUIApp.appendLog("Η διαδικασία ολοκληρώθηκε. Μπορείτε αν θέλετε να δείτε τα στατιστικά της βάσης.\n");
+					GUIApp.appendLog(
+							"Η διαδικασία ολοκληρώθηκε. Μπορείτε αν θέλετε να δείτε τα στατιστικά της βάσης.\n");
 
 				}
 
