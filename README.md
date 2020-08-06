@@ -52,18 +52,27 @@
   - createOpenScreen(JPanel panel): Παίρνει ως όρισμα ένα JPanel και φτιάχνει την αρχική οθόνη της εφαρμογής προσθέτοντας ένα TextArea, κουμπιά και checkbox καθώς και τις λειτουργίες τους
   - String selectFile(): Ανοίγει ένα παράθυρο διαλόγου για να επιλέξεις ένα αρχείο και επιστρέφει το path του.
   - appendLog(String text): Παίρνει ως όρισμα ένα String και το τυπώνει στο Text area του γραφικού.
-  
-  
-
-
 
 ### MainApp.java
 Η βασική κλάση του προγράμματος
-  Μέθοδοι
   - processFiles(String filePath, boolean processFullMetadata) παίρνει ως όρισμα το path που αντιστοιχεί στο metadata.csv και το αν θέλουμε να επεξεργαστούμε και τα json αρχεία και είναι υπεύθυνη για τη βασική ροή του προγράμματος όπως αναλύθηκε παραπάνω.
   
-### 
+### CSVParser.java
+Η κλάση για την επεξεργασία του .csv αρχείου
+ - List<Article> parseFile(String filePath): Αυτή η μέθοδος δέχεται ως όρισμα ένα path για ένα αρχείο, και επιστρέφει μία λίστα με όλα τα αντικείμενα τύπου Article που έχει το αρχείο αυτό.
+ 
+### JSONParser.java
+Η κλάση για την επεξεργασία του .json αρχείου
+ - List<FullArticle> parseFile(Article article, String folder): Αυτή η μέθοδος δέχεται ως όρισμα ένα αντικείμενο τύπου Article καθώς το path για τον φάκελο που περιέχει το φάκελο document_parses με τα .json αρχεία, και επιστρέφει μία λίστα με όλα τα αντικείμενα τύπου FullArticles που αντιστοιχούν στο Article αυτό.
   
+### DBManager.java
+Η κλάση που διαχειρίζεται τη σύνδεση με τη Βάση δεδομένων και την αποστολή ερωτημάτων σε αυτήν. Έχει τις εξής μεθόδους:
+
+ - Properties loadSettings(): Διαβάζει το αρχείο config.properties του project και επιστρέφει ένα αντικείμενο τύπου Properties με τις παραμέτρους της βάσης.
+ - writeArticlesMetadata(List<Article> articles): Παίρνει ως όρισμα μία λίστα από αντικείμενα Articles και αποθηκεύει στον πίνακα Article της βάσης όλα τα πεδία τους.
+   Πρώτα φτιάχνει τα παραμετροποιημένα qweries και με τα τα εκτελει όλα μαζλι στη βάση ως batch με σκοπό τη μικρότερη καθυστέρηση του προγράμματος στην επικοινωνία.
+ - List<Article> getArticlesWithFiles(): Επιλέγει από τη βάση τις εγγραφές εκείνες που έχουν τιμή στα πεδία pathToPDF ή pathToPMC και επιστρέφει μία λίστα με αντικείμενα Articles με πεδία το cordID, το pathToPDF και pathToPMC της εγγραφής.
+ - writeFullArticle(FullArticle fullArticle, String cordID): Αυτή η μέθοδος λαμβάνει ως ορίσματα ένα αντικείμενο τύπου FullArticle και το ID ενός Article, και αποθηκεύει στον πίνακα FullArticle της βάσης το FullArticle, και στο πτη συσχέτιση του Article με ένα FullArticle ArticleToFullArticle
 
 
 ## Μέθοδοι 
