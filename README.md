@@ -13,11 +13,11 @@
  
  - Article: Έχει στήλες που προέρχονται από τα μεταδεδομένα που βρίσκονται στο csv αρχείο, με primary key το cordID
  
- - FullArticle: Έχει στήλες που προέρχονται από τα .json αρχεία
+ - FullArticle: Έχει στήλες που προέρχονται από τα .json αρχεία, με primary key το paperID
  
- - ArticleToFullArticle: Περιγράφει τη σχέση του Article και του FullArticle με τη χρήση foreign keys.
+ - ArticleToFullArticle: Περιγράφει τη σχέση του Article και του FullArticle με τη χρήση foreign keys
  
- Περισσότερα μπορείτε να δείτε στο dump της βάσης που υπάρχει στο project.
+ Περισσότερα μπορείτε να δείτε στο dump της βάσης που υπάρχει στο project με όνομα Cord-19.sql
 
 ## Βασική Ροή προγράμματος
 1. Ξεκινά με την εμφάνιση του γραφικού περιβάλλοντος καλώντας τη μέθοδο GUIApp.show();. 
