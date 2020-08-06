@@ -20,30 +20,33 @@
  Περισσότερα μπορείτε να δείτε στο dump της βάσης που υπάρχει στο project με όνομα Cord-19.sql
 
 ## Βασική Ροή προγράμματος
-1. Ξεκινά με την εμφάνιση του γραφικού περιβάλλοντος καλώντας τη μέθοδο GUIApp.show();. 
-2. Στη συνέχεια καλείται η μέθοδος processFiles. Η συγκεκριμένη μέθοδος παίρνει ως όρισμα το path που αντιστοιχεί στο metadata.csv και το αν θέλουμε να επεξεργαστούμε και τα json αρχεία.
-3. Καλεί στη συνέχεια την csvParser.parseFile(filePath); η οποία διαβάζει το metadata.csv και επιστρέφει μία λίστα με αντικείμενα τύπου Articles.java
-4. Δημιουργεί ένα στιγμιότυπο του DBmanager, ο οποίος εγκαθιστά μια σύνδεση στη βάση που έχει περιγραφεί στο configuration αρχείο της εφαρμογής.
-5. Καλεί τη dbManager.writeArticlesMetadata(List<Article> articles); η οποία αποθηκεύει όλη τη λίστα που επέστρεψε ο csvParser στον πίνακα Article της βάσης.
-6. Στη συνέχεια αν έχει επιλεγεί στο γραφικό ότι θέλω πλήρη μεταδεδομένα καλείται η dbManager.getArticlesWithFiles(); η οποία βρίσκει από τη βάση όλες τις εγγραφές του πίνακα Article οι οποίες έχουν τιμές στις στήλες pathToPMC ή pathToPDF και επιστρέφει μια λίστα από αντικείμενα τύπου Articles.java ένα για κάθε εγγραφή.
-7. Για κάθε ένα από αυτά τα αντικείμενα καλείται έπειτα η jsonParser.parseFile(Article article, String folder); η οποία διαβάζει το αντίστοιχο json αρχείο τους και επιστρέφει μια λίστα από αντικείμενα τύπου FullArticle.java (μπορεί να είναι πολλαπλά καθώς ένα άρθρο μπορεί να έχει πολλαπλά json αρχεία) . 
-8. Για κάθε ένα από τα FullArticles καλείτε η dbManager.writeFullArticle(FullArticle fullArticle, String cordID); αποθηκεύει στη βάση το FullArticle, και τη συσχέτιση του Article με ένα FullArticle
-9.Τέλος καλεί τη dbManager.close(); η οποία κλείνει την σύνδεση στη βάση.
+Ξεκινά με την εμφάνιση του γραφικού περιβάλλοντος καλώντας τη μέθοδο GUIApp.show();. 
+
+Για τη βασική λειτουργία της επεξεργασίας των αρχείων και την αποθήκευση στη βάση δεδομένων, η ροή είναι η ακόλουθη:
+
+1. Καλείται η μέθοδος processFiles. Η συγκεκριμένη μέθοδος παίρνει ως όρισμα το path που αντιστοιχεί στο metadata.csv και το αν θέλουμε να επεξεργαστούμε και τα json αρχεία.
+2. Καλεί στη συνέχεια την csvParser.parseFile(filePath); η οποία διαβάζει το metadata.csv και επιστρέφει μία λίστα με αντικείμενα τύπου Article.java
+3. Δημιουργεί ένα στιγμιότυπο του DBmanager, ο οποίος εγκαθιστά μια σύνδεση στη βάση που έχει περιγραφεί στο configuration αρχείο της εφαρμογής.
+4. Καλεί τη dbManager.writeArticlesMetadata(List<Article> articles); η οποία αποθηκεύει όλη τη λίστα που επέστρεψε ο csvParser στον πίνακα Article της βάσης.
+5. Στη συνέχεια, αν έχει επιλεγεί στο γραφικό ότι θέλω πλήρη μεταδεδομένα, καλείται η dbManager.getArticlesWithFiles(); η οποία βρίσκει από τη βάση όλες τις εγγραφές του πίνακα Article οι οποίες έχουν τιμές στις στήλες pathToPMC ή pathToPDF και επιστρέφει μια λίστα από αντικείμενα τύπου Article.java, ένα για κάθε εγγραφή.
+6. Για κάθε ένα από αυτά τα αντικείμενα καλείται έπειτα η jsonParser.parseFile(Article article, String folder); η οποία διαβάζει το αντίστοιχο json αρχείο τους και επιστρέφει μια λίστα από αντικείμενα τύπου FullArticle.java (μπορεί να είναι πολλαπλά καθώς ένα άρθρο μπορεί να έχει πολλαπλά json αρχεία). 
+7. Για κάθε ένα από τα FullArticles καλείτε η dbManager.writeFullArticle(FullArticle fullArticle, String cordID); η οποία αποθηκεύει στη βάση το FullArticle, και τη συσχέτιση του Article με ένα FullArticle με χρήση foreign keys.
+8.Τέλος καλεί τη dbManager.close(); η οποία κλείνει τη σύνδεση στη βάση.
 
 
 ## Κλάσεις και μέθοδοι της εφαρμογής
 
 ### Article.java
-Κλάση που μοντελοποιεί τα Άρθρα με πεδία που αντιστοιχούν στα μεταδεομένα που περιγράφονται στο metadata.csv αρχείο. 
+Κλάση που μοντελοποιεί τα Άρθρα με πεδία που αντιστοιχούν στα μεταδεδομένα που περιγράφονται στο metadata.csv αρχείο. 
 Η αντιστοίχιση είναι:
 
- csv File: cord_uid, sha ,source_x, title, abstract, publish_time, authors ,pdf_json_files, pmc_json_files, url, s2_id
+ csv File: cord_uid, sha, source_x, title, abstract, publish_time, authors, pdf_json_files, pmc_json_files, url, s2_id
  
  Article Object: ID, sha, source, title, articleAbstract, publishTime, authors, journal, pathToPDFJson, pathToPMCJson, url, corpusID
  
  
 ### FullArticle.java
-Κλάση που μοντελοποιεί τα Άρθρα με πεδία που αντιστοιχούν στα μεταδεομένα που περιγράφονται στο .json αρχείο.
+Κλάση που μοντελοποιεί τα Άρθρα με πεδία που αντιστοιχούν στα μεταδεδομένα που περιγράφονται στο .json αρχείο.
 Οι υπόλοιπες κλάσεις που υπάρχουν στο πακέτο model είναι για τη σωστή περιγραφή του FullArtcle.java
 
 ### GUIApp.java
